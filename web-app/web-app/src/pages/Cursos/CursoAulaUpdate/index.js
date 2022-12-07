@@ -1,0 +1,62 @@
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+
+import { Container } from './styles'
+import { useNavigate, useParams } from 'react-router-dom';
+
+export default function CursoAulaUpdate(){
+
+  const { cursoId } = useParams();
+  const { aulaId } = useParams();
+  const navigate = useNavigate();
+  const [name, setName] = useState();
+  const [link, setLink] = useState('');
+
+  useEffect(() => {
+    axios.get(`http://localhost:3333/aulas/${aulaId}`).then((response) => {
+      setName(response.data[0].nome);
+      setLink(response.data[0].link);
+    });
+  }, []);
+
+  const handleSubmit = ( e ) => {
+    e.preventDefault();
+
+    axios.put(`http://localhost:3333/aulas/${aulaId}`, {
+      nome : name,
+      link : link,
+      idCurso : cursoId
+    }).then(()=>{
+      navigate(-1);
+    })
+    .catch(function (error) {
+      if(error.response){
+        console.log(error.response.status);
+      }
+    }) 
+  }
+
+  return (
+    <Container>
+      <h3>Editar Curso</h3>
+      <form onSubmit={handleSubmit} >
+        <span> Nome: </span>
+        <input
+          type="text"
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+        />
+
+        <span> Link: </span>
+        <input 
+          type="text"
+          onChange={(e) => setLink(e.target.value)}
+          value={link}
+        />
+
+        <button type='submit'> Cadastrar </button>
+      </form>
+    </Container>
+  );
+}
