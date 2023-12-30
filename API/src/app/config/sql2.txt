@@ -1,0 +1,42 @@
+CREATE TABLE aluno 
+( 
+ nome VARCHAR(50),  
+ senha VARCHAR(50),  
+ email VARCHAR(50) PRIMARY KEY,  
+ tipo VARCHAR(5),  
+ idfavoritos VARCHAR(50)  
+); 
+
+CREATE TABLE cursos 
+( 
+ nome VARCHAR(50),  
+ img VARCHAR(50),  
+ tag VARCHAR(50),  
+ descrição VARCHAR(50),  
+ id VARCHAR(50) PRIMARY KEY 
+); 
+
+CREATE TABLE Aulas 
+( 
+ nome VARCHAR(50),  
+ id VARCHAR(50) PRIMARY KEY,  
+ link VARCHAR(50),  
+ idcursos VARCHAR(50)
+); 
+
+CREATE TABLE favoritos 
+( 
+ id VARCHAR(50) PRIMARY KEY 
+); 
+
+CREATE TABLE favoritos_cursos ( 
+ idCurso VARCHAR(50) PRIMARY KEY,  
+ idFavoritos VARCHAR(50)  
+); 
+
+ALTER TABLE aluno ADD FOREIGN KEY(idfavoritos) REFERENCES favoritos (id);
+
+ALTER TABLE Aulas ADD FOREIGN KEY(idcursos) REFERENCES cursos (id);
+
+ALTER TABLE favoritos_cursos ADD FOREIGN KEY(idCurso) REFERENCES cursos (id);
+ALTER TABLE favoritos_cursos ADD FOREIGN KEY(idFavoritos) REFERENCES favoritos (id);
